@@ -1,0 +1,38 @@
+{
+  "status": "PASS",
+  "scope": "offline candidate only - no devices or simulator",
+  "sites": 3,
+  "zones": 24,
+  "future_endpoint_assumptions": {
+    "Corp": 10000,
+    "IoT": 10000
+  },
+  "negative_fixtures": [
+    {
+      "fixture": "overlap",
+      "rejected": true,
+      "reason": "zone overlap"
+    },
+    {
+      "fixture": "capacity",
+      "rejected": true,
+      "reason": "insufficient capacity"
+    },
+    {
+      "fixture": "outside",
+      "rejected": true,
+      "reason": "zone outside site"
+    },
+    {
+      "fixture": "ipv6_overlap",
+      "rejected": true,
+      "reason": "zone overlap"
+    },
+    {
+      "fixture": "scale",
+      "rejected": true,
+      "reason": "scale not covered"
+    }
+  ],
+  "seconds": 0.0114
+}

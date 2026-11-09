@@ -1,0 +1,198 @@
+{
+  "status": "CANDIDATE - instructor and team review required",
+  "ipv6_documentation_only": true,
+  "ipv6_aggregate": "2001:db8:1000::/48",
+  "lan_ipv4_prefix": 24,
+  "reserved_gateway_addresses_per_lan": 3,
+  "sites": [
+    {
+      "name": "HCMC",
+      "ipv4_summary": "10.16.0.0/16",
+      "ipv6_summary": "2001:db8:1000::/52",
+      "zones": [
+        {
+          "name": "Corp",
+          "ipv4_pool": "10.16.0.0/19",
+          "ipv6_pool": "2001:db8:1000::/56",
+          "endpoint_assumption": 5000,
+          "allocation": "LAN /24 and /64"
+        },
+        {
+          "name": "Voice",
+          "ipv4_pool": "10.16.32.0/19",
+          "ipv6_pool": "2001:db8:1000:100::/56",
+          "endpoint_assumption": 5000,
+          "allocation": "LAN /24 and /64"
+        },
+        {
+          "name": "IoT",
+          "ipv4_pool": "10.16.64.0/20",
+          "ipv6_pool": "2001:db8:1000:200::/56",
+          "endpoint_assumption": 3000,
+          "allocation": "LAN /24 and /64"
+        },
+        {
+          "name": "Guest",
+          "ipv4_pool": "10.16.128.0/22",
+          "ipv6_pool": "2001:db8:1000:300::/56",
+          "endpoint_assumption": 500,
+          "allocation": "LAN /24 and /64"
+        },
+        {
+          "name": "Management",
+          "ipv4_pool": "10.16.144.0/24",
+          "ipv6_pool": "2001:db8:1000:400::/56",
+          "endpoint_assumption": 100,
+          "allocation": "LAN /24 and /64"
+        },
+        {
+          "name": "Services",
+          "ipv4_pool": "10.16.145.0/24",
+          "ipv6_pool": "2001:db8:1000:500::/56",
+          "endpoint_assumption": 100,
+          "allocation": "LAN /24 and /64"
+        },
+        {
+          "name": "Transit",
+          "ipv4_pool": "10.16.146.0/24",
+          "ipv6_pool": "2001:db8:1000:600::/56",
+          "endpoint_assumption": 0,
+          "allocation": "transit /31,/127 or loopback /32,/128"
+        },
+        {
+          "name": "Loopback",
+          "ipv4_pool": "10.16.147.0/24",
+          "ipv6_pool": "2001:db8:1000:700::/56",
+          "endpoint_assumption": 0,
+          "allocation": "transit /31,/127 or loopback /32,/128"
+        }
+      ]
+    },
+    {
+      "name": "Hanoi",
+      "ipv4_summary": "10.32.0.0/16",
+      "ipv6_summary": "2001:db8:1000:1000::/52",
+      "zones": [
+        {
+          "name": "Corp",
+          "ipv4_pool": "10.32.0.0/20",
+          "ipv6_pool": "2001:db8:1000:1000::/56",
+          "endpoint_assumption": 3750,
+          "allocation": "LAN /24 and /64"
+        },
+        {
+          "name": "Voice",
+          "ipv4_pool": "10.32.32.0/20",
+          "ipv6_pool": "2001:db8:1000:1100::/56",
+          "endpoint_assumption": 3750,
+          "allocation": "LAN /24 and /64"
+        },
+        {
+          "name": "IoT",
+          "ipv4_pool": "10.32.64.0/20",
+          "ipv6_pool": "2001:db8:1000:1200::/56",
+          "endpoint_assumption": 2000,
+          "allocation": "LAN /24 and /64"
+        },
+        {
+          "name": "Guest",
+          "ipv4_pool": "10.32.128.0/22",
+          "ipv6_pool": "2001:db8:1000:1300::/56",
+          "endpoint_assumption": 500,
+          "allocation": "LAN /24 and /64"
+        },
+        {
+          "name": "Management",
+          "ipv4_pool": "10.32.144.0/24",
+          "ipv6_pool": "2001:db8:1000:1400::/56",
+          "endpoint_assumption": 100,
+          "allocation": "LAN /24 and /64"
+        },
+        {
+          "name": "Services",
+          "ipv4_pool": "10.32.145.0/24",
+          "ipv6_pool": "2001:db8:1000:1500::/56",
+          "endpoint_assumption": 100,
+          "allocation": "LAN /24 and /64"
+        },
+        {
+          "name": "Transit",
+          "ipv4_pool": "10.32.146.0/24",
+          "ipv6_pool": "2001:db8:1000:1600::/56",
+          "endpoint_assumption": 0,
+          "allocation": "transit /31,/127 or loopback /32,/128"
+        },
+        {
+          "name": "Loopback",
+          "ipv4_pool": "10.32.147.0/24",
+          "ipv6_pool": "2001:db8:1000:1700::/56",
+          "endpoint_assumption": 0,
+          "allocation": "transit /31,/127 or loopback /32,/128"
+        }
+      ]
+    },
+    {
+      "name": "DaNang",
+      "ipv4_summary": "10.48.0.0/16",
+      "ipv6_summary": "2001:db8:1000:2000::/52",
+      "zones": [
+        {
+          "name": "Corp",
+          "ipv4_pool": "10.48.0.0/21",
+          "ipv6_pool": "2001:db8:1000:2000::/56",
+          "endpoint_assumption": 1250,
+          "allocation": "LAN /24 and /64"
+        },
+        {
+          "name": "Voice",
+          "ipv4_pool": "10.48.32.0/21",
+          "ipv6_pool": "2001:db8:1000:2100::/56",
+          "endpoint_assumption": 1250,
+          "allocation": "LAN /24 and /64"
+        },
+        {
+          "name": "IoT",
+          "ipv4_pool": "10.48.64.0/19",
+          "ipv6_pool": "2001:db8:1000:2200::/56",
+          "endpoint_assumption": 5000,
+          "allocation": "LAN /24 and /64"
+        },
+        {
+          "name": "Guest",
+          "ipv4_pool": "10.48.128.0/22",
+          "ipv6_pool": "2001:db8:1000:2300::/56",
+          "endpoint_assumption": 500,
+          "allocation": "LAN /24 and /64"
+        },
+        {
+          "name": "Management",
+          "ipv4_pool": "10.48.144.0/24",
+          "ipv6_pool": "2001:db8:1000:2400::/56",
+          "endpoint_assumption": 100,
+          "allocation": "LAN /24 and /64"
+        },
+        {
+          "name": "Services",
+          "ipv4_pool": "10.48.145.0/24",
+          "ipv6_pool": "2001:db8:1000:2500::/56",
+          "endpoint_assumption": 100,
+          "allocation": "LAN /24 and /64"
+        },
+        {
+          "name": "Transit",
+          "ipv4_pool": "10.48.146.0/24",
+          "ipv6_pool": "2001:db8:1000:2600::/56",
+          "endpoint_assumption": 0,
+          "allocation": "transit /31,/127 or loopback /32,/128"
+        },
+        {
+          "name": "Loopback",
+          "ipv4_pool": "10.48.147.0/24",
+          "ipv6_pool": "2001:db8:1000:2700::/56",
+          "endpoint_assumption": 0,
+          "allocation": "transit /31,/127 or loopback /32,/128"
+        }
+      ]
+    }
+  ]
+}
