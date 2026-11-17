@@ -1,0 +1,120 @@
+{
+  "scope": "Single ISP baseline, IKEv2/IPsec HQ-Hanoi and HQ-DaNang, eBGP overlay; no EVPN or iBGP",
+  "source": "../../TVI_Step2_IP_Addressing_Plan (origin).md",
+  "isp": {
+    "name": "ISP01",
+    "asn": 65000,
+    "rid": "10.254.0.21"
+  },
+  "edges": [
+    {
+      "name": "HQ-EDGE01",
+      "site": "HQ",
+      "asn": 65001,
+      "rid": "10.254.0.11",
+      "wan": "10.255.2.2",
+      "isp": "10.255.2.1",
+      "ispIf": "GigabitEthernet0/1",
+      "net": "10.255.2.0/30",
+      "vlan": 100,
+      "p4": "10.10.100.0/24",
+      "p6": "2001:db8:10:100::/64"
+    },
+    {
+      "name": "HN-EDGE01",
+      "site": "Hanoi",
+      "asn": 65002,
+      "rid": "10.254.0.15",
+      "wan": "10.255.1.2",
+      "isp": "10.255.1.1",
+      "ispIf": "GigabitEthernet0/0",
+      "net": "10.255.1.0/30",
+      "vlan": 20,
+      "p4": "10.20.16.0/20",
+      "p6": "2001:db8:20:20::/64"
+    },
+    {
+      "name": "DN-EDGE01",
+      "site": "DaNang",
+      "asn": 65003,
+      "rid": "10.254.0.18",
+      "wan": "10.255.3.2",
+      "isp": "10.255.3.1",
+      "ispIf": "GigabitEthernet0/2",
+      "net": "10.255.3.0/30",
+      "vlan": 30,
+      "p4": "10.30.16.0/20",
+      "p6": "2001:db8:30:30::/64"
+    }
+  ],
+  "tunnels": [
+    {
+      "id": "HN",
+      "interface": "Tunnel0",
+      "hub": "HQ-EDGE01",
+      "branch": "HN-EDGE01",
+      "hub4": "172.16.1.1",
+      "branch4": "172.16.1.2",
+      "hub6": "2001:db8:ff00:1::1",
+      "branch6": "2001:db8:ff00:1::2",
+      "secret": "{{PSK_HQ_HN}}"
+    },
+    {
+      "id": "DN",
+      "interface": "Tunnel1",
+      "hub": "HQ-EDGE01",
+      "branch": "DN-EDGE01",
+      "hub4": "172.16.2.1",
+      "branch4": "172.16.2.2",
+      "hub6": "2001:db8:ff00:2::1",
+      "branch6": "2001:db8:ff00:2::2",
+      "secret": "{{PSK_HQ_DN}}"
+    }
+  ],
+  "gateways": [
+    {
+      "name": "HQ-DIST-01",
+      "edge": "HQ-EDGE01",
+      "next4": "10.10.0.1",
+      "next6": "2001:db8:10:f000::1",
+      "interface": "GigabitEthernet0/0",
+      "remote": [
+        "HN-EDGE01",
+        "DN-EDGE01"
+      ]
+    },
+    {
+      "name": "HQ-CORE02",
+      "edge": "HQ-EDGE01",
+      "next4": "10.10.0.5",
+      "next6": "2001:db8:10:f001::1",
+      "interface": "GigabitEthernet0/0",
+      "remote": [
+        "HN-EDGE01",
+        "DN-EDGE01"
+      ]
+    },
+    {
+      "name": "HN-DIST01",
+      "edge": "HN-EDGE01",
+      "next4": "10.20.0.1",
+      "next6": "2001:db8:20:f003::1",
+      "interface": "GigabitEthernet0/0",
+      "remote": [
+        "HQ-EDGE01"
+      ]
+    },
+    {
+      "name": "DN-DIST01",
+      "edge": "DN-EDGE01",
+      "next4": "10.30.0.1",
+      "next6": "2001:db8:30:f004::1",
+      "interface": "GigabitEthernet0/0",
+      "remote": [
+        "HQ-EDGE01"
+      ]
+    }
+  ],
+  "runtime": "NOT_RUN",
+  "ipv6_profile": "Optional upgrade: tunnel mode ipsec dual-overlay; IOS XE 17.9.1a+ command, platform support still requires lab verification"
+}

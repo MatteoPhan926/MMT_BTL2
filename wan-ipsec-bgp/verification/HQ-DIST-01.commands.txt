@@ -1,0 +1,7 @@
+show ip interface brief
+show ospfv3 neighbor
+show standby brief
+show ip route 10.20.16.0/20
+show ipv6 route 2001:db8:20:20::/64
+show ip route 10.30.16.0/20
+show ipv6 route 2001:db8:30:30::/64

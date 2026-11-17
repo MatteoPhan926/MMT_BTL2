@@ -1,0 +1,14 @@
+show version
+show ip interface brief
+show ip bgp summary
+show ip bgp
+show ip route
+ping 10.255.2.2 source 10.255.2.1
+show ip bgp neighbors 10.255.2.2 advertised-routes
+show ip bgp neighbors 10.255.2.2 routes
+ping 10.255.1.2 source 10.255.1.1
+show ip bgp neighbors 10.255.1.2 advertised-routes
+show ip bgp neighbors 10.255.1.2 routes
+ping 10.255.3.2 source 10.255.3.1
+show ip bgp neighbors 10.255.3.2 advertised-routes
+show ip bgp neighbors 10.255.3.2 routes

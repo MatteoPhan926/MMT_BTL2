@@ -1,0 +1,39 @@
+! Run stage by stage; these are commands, not recorded evidence.
+show version
+show ip interface brief
+show ip ospf neighbor
+show ospfv3 neighbor
+show ip bgp summary
+show ip route 10.10.100.0/24
+ping 10.255.2.1 source 10.255.2.2
+show ip bgp neighbors 10.255.2.1 advertised-routes
+show ip route 10.255.1.2
+ping 10.255.1.2 source 10.255.2.2
+show ip route 10.255.3.2
+ping 10.255.3.2 source 10.255.2.2
+! Record counters BEFORE tunnel/host traffic
+show crypto ikev2 sa
+show crypto ipsec sa
+show interfaces Tunnel0
+ping 172.16.1.2 source 172.16.1.1
+show ip bgp neighbors 172.16.1.2 advertised-routes
+show ip bgp neighbors 172.16.1.2 routes
+show ip route 10.20.16.0/20
+! AFTER dual-overlay capability check and phases 05-07
+ping ipv6 2001:db8:ff00:1::2 source 2001:db8:ff00:1::1
+show bgp ipv6 unicast neighbors 2001:db8:ff00:1::2 advertised-routes
+show bgp ipv6 unicast neighbors 2001:db8:ff00:1::2 routes
+show ipv6 route 2001:db8:20:20::/64
+show interfaces Tunnel1
+ping 172.16.2.2 source 172.16.2.1
+show ip bgp neighbors 172.16.2.2 advertised-routes
+show ip bgp neighbors 172.16.2.2 routes
+show ip route 10.30.16.0/20
+! AFTER dual-overlay capability check and phases 05-07
+ping ipv6 2001:db8:ff00:2::2 source 2001:db8:ff00:2::1
+show bgp ipv6 unicast neighbors 2001:db8:ff00:2::2 advertised-routes
+show bgp ipv6 unicast neighbors 2001:db8:ff00:2::2 routes
+show ipv6 route 2001:db8:30:30::/64
+show bgp ipv6 unicast summary
+! Record counters AFTER tunnel/host traffic
+show crypto ipsec sa

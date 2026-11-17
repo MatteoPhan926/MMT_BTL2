@@ -1,0 +1,35 @@
+! Record all output with timestamp, hostname, image/version
+terminal length 0
+show clock
+show version
+show ip interface brief
+show ipv6 interface brief
+show running-config | section router ospfv3
+show ospfv3
+show ospfv3 neighbor
+show ospfv3 interface
+show ip route ospf
+show ipv6 route ospf
+ping 10.30.0.1 source 10.30.0.2 repeat 5
+ping ipv6 2001:db8:30:f004::1 source GigabitEthernet0/0 repeat 5
+show ip route 10.254.0.18
+show ipv6 route 2001:db8:fffe::12/128
+ping 10.254.0.18 source Loopback0 repeat 20
+ping ipv6 2001:db8:fffe::12 source Loopback0 repeat 20
+! Check SVI up/up and passive OSPF enrollment only where Step 3-4 config exists
+show interfaces Vlan30
+show interfaces Vlan40
+show interfaces Vlan50
+show interfaces Vlan99
+show interfaces Vlan35
+show interfaces Vlan136
+show interfaces Vlan137
+show interfaces Vlan138
+show interfaces Vlan139
+show interfaces Vlan140
+show interfaces Vlan141
+show interfaces Vlan142
+show interfaces Vlan143
+show interfaces Vlan144
+show interfaces Vlan145
+show interfaces Vlan146

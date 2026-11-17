@@ -1,0 +1,33 @@
+{
+  "scope": "Step 5 intra-site OSPF only",
+  "implementation": "ORIGIN_ALIGNED_CONFIGS_AND_VERIFICATION_PREPARED",
+  "address_source": "C:/MMT/BTL/BTL2/TVI_Step2_IP_Addressing_Plan (origin).md v1.0",
+  "runtime": "NOT_RUN",
+  "offline_check": {
+    "status": "PASS",
+    "command": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\site-ospf\\validate.ps1",
+    "scope": "Origin tables, configuration values and design connectivity only; not Cisco CLI validation or OSPF convergence",
+    "nodes": 7,
+    "unique_links_per_address_family": 5,
+    "svi_allocations": 26,
+    "unresolved_address_placeholders_in_device_configs": 0
+  },
+  "acceptance": "NOT_VERIFIED",
+  "missing_inputs": [
+    "Target simulator, device model and image/version supporting OSPFv3 IPv4 and IPv6 AF",
+    "Lab access or actual device command outputs",
+    "Step 3-4 SVI/HSRP/IPv6 RA running configurations and up/up proof for all planned VLANs",
+    "HQ Po1 physical member map and Step 3-4 operational evidence"
+  ],
+  "results": {
+    "transit_ping_before_ospf": null,
+    "neighbors_full_both_af": null,
+    "all_intrasite_loopback_routes": null,
+    "all_intrasite_source_pings": null,
+    "edge_user_subnet_routes": null,
+    "hq_failover_ipv4_seconds": null,
+    "hq_failover_ipv6_seconds": null,
+    "restoration": null
+  },
+  "raw_evidence_files": []
+}

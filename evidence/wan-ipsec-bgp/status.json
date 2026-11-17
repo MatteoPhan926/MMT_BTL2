@@ -1,0 +1,34 @@
+{
+  "scope": "Step6 single ISP baseline + HQ-HN/HQ-DN IPsec and eBGP overlay",
+  "implementation": "CONFIGURATION_FILES_PREPARED",
+  "offline": {
+    "status": "PASS",
+    "checks": 266,
+    "negative_policy_tests": 4,
+    "step5_regression": "PASS: 7 nodes, 5 links per AF, 26 SVI allocations",
+    "scope": "Static consistency checks only; not IOS CLI execution"
+  },
+  "runtime": "NOT_RUN",
+  "acceptance": {
+    "isp_ebgp_established": "NOT_VERIFIED",
+    "hq_hn_ipsec_traffic": "NOT_VERIFIED",
+    "hq_dn_ipsec_traffic": "NOT_VERIFIED",
+    "overlay_ipv4_prefixes": "NOT_VERIFIED",
+    "branch_hosts_to_hq": "NOT_VERIFIED",
+    "ipv6_dual_stack": "NOT_VERIFIED",
+    "step5_runtime_regression": "NOT_VERIFIED"
+  },
+  "required_inputs": [
+    "Simulator/platform/image version and CLI capability",
+    "Authorized SSH/console access or captured device outputs",
+    "Locally configured per-tunnel PSKs (never commit)",
+    "Step3-4 SVIs/gateways/HSRP/RA and Step5 actual OSPF reachability"
+  ],
+  "not_implemented": [
+    "Second ISP and backup tunnels (reserved in origin)",
+    "iBGP/EVPN alternative",
+    "All-VLAN intersite connectivity",
+    "Firewall/source-security policy and HA return-route tracking"
+  ],
+  "raw_evidence": []
+}

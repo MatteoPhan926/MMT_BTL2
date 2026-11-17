@@ -1,0 +1,50 @@
+! Record all output with timestamp, hostname, image/version
+terminal length 0
+show clock
+show version
+show ip interface brief
+show ipv6 interface brief
+show running-config | section router ospfv3
+show ospfv3
+show ospfv3 neighbor
+show ospfv3 interface
+show ip route ospf
+show ipv6 route ospf
+ping 10.30.0.2 source 10.30.0.1 repeat 5
+ping ipv6 2001:db8:30:f004::2 source GigabitEthernet0/1 repeat 5
+show ip route 10.254.0.19
+show ipv6 route 2001:db8:fffe::13/128
+ping 10.254.0.19 source Loopback0 repeat 20
+ping ipv6 2001:db8:fffe::13 source Loopback0 repeat 20
+show ip route 10.30.16.0 255.255.240.0
+show ipv6 route 2001:db8:30:30::/64
+show ip route 10.30.32.0 255.255.240.0
+show ipv6 route 2001:db8:30:40::/64
+show ip route 10.30.48.0 255.255.248.0
+show ipv6 route 2001:db8:30:50::/64
+show ip route 10.30.99.0 255.255.255.0
+show ipv6 route 2001:db8:30:99::/64
+show ip route 10.30.128.0 255.255.252.0
+show ipv6 route 2001:db8:30:35::/64
+show ip route 10.30.132.0 255.255.252.0
+show ipv6 route 2001:db8:30:136::/64
+show ip route 10.30.136.0 255.255.252.0
+show ipv6 route 2001:db8:30:137::/64
+show ip route 10.30.140.0 255.255.252.0
+show ipv6 route 2001:db8:30:138::/64
+show ip route 10.30.144.0 255.255.252.0
+show ipv6 route 2001:db8:30:139::/64
+show ip route 10.30.148.0 255.255.252.0
+show ipv6 route 2001:db8:30:140::/64
+show ip route 10.30.152.0 255.255.252.0
+show ipv6 route 2001:db8:30:141::/64
+show ip route 10.30.156.0 255.255.252.0
+show ipv6 route 2001:db8:30:142::/64
+show ip route 10.30.160.0 255.255.252.0
+show ipv6 route 2001:db8:30:143::/64
+show ip route 10.30.164.0 255.255.252.0
+show ipv6 route 2001:db8:30:144::/64
+show ip route 10.30.168.0 255.255.252.0
+show ipv6 route 2001:db8:30:145::/64
+show ip route 10.30.172.0 255.255.252.0
+show ipv6 route 2001:db8:30:146::/64

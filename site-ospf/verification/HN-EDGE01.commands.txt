@@ -1,0 +1,28 @@
+! Record all output with timestamp, hostname, image/version
+terminal length 0
+show clock
+show version
+show ip interface brief
+show ipv6 interface brief
+show running-config | section router ospfv3
+show ospfv3
+show ospfv3 neighbor
+show ospfv3 interface
+show ip route ospf
+show ipv6 route ospf
+ping 10.20.0.2 source 10.20.0.1 repeat 5
+ping ipv6 2001:db8:20:f003::2 source GigabitEthernet0/1 repeat 5
+show ip route 10.254.0.16
+show ipv6 route 2001:db8:fffe::10/128
+ping 10.254.0.16 source Loopback0 repeat 20
+ping ipv6 2001:db8:fffe::10 source Loopback0 repeat 20
+show ip route 10.20.16.0 255.255.240.0
+show ipv6 route 2001:db8:20:20::/64
+show ip route 10.20.32.0 255.255.240.0
+show ipv6 route 2001:db8:20:40::/64
+show ip route 10.20.48.0 255.255.248.0
+show ipv6 route 2001:db8:20:50::/64
+show ip route 10.20.99.0 255.255.255.0
+show ipv6 route 2001:db8:20:99::/64
+show ip route 10.20.64.0 255.255.254.0
+show ipv6 route 2001:db8:20:25::/64

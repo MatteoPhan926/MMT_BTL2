@@ -1,0 +1,17 @@
+! Template only for an additional, approved SVI not in origin inventory.
+! Origin VLAN SVIs are already enrolled in each node's 02-ospf.cfg.
+! Do not use for WAN, OOB or Vlan900; preserve Step 3-4 IP/HSRP/RA config.
+configure terminal
+router ospfv3 {{SITE_PROCESS_ID}}
+ address-family ipv4 unicast
+  passive-interface Vlan{{USER_VLAN_ID}}
+ exit-address-family
+ address-family ipv6 unicast
+  passive-interface Vlan{{USER_VLAN_ID}}
+ exit-address-family
+exit
+interface Vlan{{USER_VLAN_ID}}
+ ospfv3 {{SITE_PROCESS_ID}} area 0 ipv4
+ ospfv3 {{SITE_PROCESS_ID}} area 0 ipv6
+exit
+end

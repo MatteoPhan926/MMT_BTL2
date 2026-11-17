@@ -1,0 +1,43 @@
+! Step 6 delta only. Review backup/platform before applying; no automatic save.
+configure terminal
+! Replace PSK tokens locally; never commit rendered secrets.
+crypto ikev2 proposal S6-IKE
+ encryption aes-cbc-256
+ integrity sha256
+ group 14
+exit
+crypto ikev2 policy S6-POLICY
+ proposal S6-IKE
+exit
+crypto ipsec transform-set S6-ESP esp-aes 256 esp-sha256-hmac
+ mode tunnel
+exit
+crypto ikev2 keyring S6-HN-KEYRING
+ peer HQ-EDGE01
+  address 10.255.2.2
+  pre-shared-key local {{PSK_HQ_HN}}
+  pre-shared-key remote {{PSK_HQ_HN}}
+ exit
+exit
+crypto ikev2 profile S6-HN-IKE
+ match identity remote address 10.255.2.2 255.255.255.255
+ identity local address 10.255.1.2
+ authentication remote pre-share
+ authentication local pre-share
+ keyring local S6-HN-KEYRING
+exit
+crypto ipsec profile S6-HN-IPSEC
+ set transform-set S6-ESP
+ set ikev2-profile S6-HN-IKE
+exit
+interface Tunnel0
+ ip address 172.16.1.2 255.255.255.252
+ ip mtu 1400
+ ip tcp adjust-mss 1360
+ tunnel source GigabitEthernet0/0
+ tunnel destination 10.255.2.2
+ tunnel mode ipsec ipv4
+ tunnel protection ipsec profile S6-HN-IPSEC
+ no shutdown
+exit
+end
