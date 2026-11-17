@@ -1,0 +1,144 @@
+!
+! Role 3 - WAN & Security - HQ-EDGE01 (Packet Tracer lab)
+! Derived from HQ-EDGE01 running-config provided by user, Nov 2026.
+! Template only. Replace the two IPsec pre-shared-key placeholders before use.
+! This is a standalone lab config, NOT a patch to Role 1/Role 2 production configs.
+! Device serial number and any actual credentials are intentionally omitted.
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+hostname HQ-EDGE01
+ip cef
+no ipv6 cef
+license boot module c2900 technology-package securityk9
+!
+crypto isakmp policy 10
+ encr aes
+ authentication pre-share
+ group 5
+!
+crypto isakmp key REPLACE_WITH_UNIQUE_LAB_PSK_HN address 10.255.1.2
+crypto isakmp key REPLACE_WITH_UNIQUE_LAB_PSK_DN address 10.255.3.2
+!
+crypto ipsec transform-set R3_HN_ESP esp-aes esp-sha-hmac
+crypto ipsec transform-set R3_DN_ESP esp-aes esp-sha-hmac
+!
+crypto map R3_VPN_MAP 10 ipsec-isakmp
+ set peer 10.255.1.2
+ set transform-set R3_HN_ESP
+ match address R3_GRE_HN
+!
+crypto map R3_VPN_MAP 20 ipsec-isakmp
+ set peer 10.255.3.2
+ set transform-set R3_DN_ESP
+ match address R3_GRE_DN
+!
+spanning-tree mode pvst
+!
+class-map match-any R3_VOICE
+ match ip dscp ef
+class-map match-any R3_CORPORATE
+ match ip dscp af21
+class-map match-any R3_CORP_TEST
+ match access-group name R3_QOS_CORP_TEST
+class-map match-any R3_EF_TEST
+ match access-group name R3_QOS_EF_TEST
+!
+policy-map R3_WAN_OUT
+ class R3_VOICE
+  priority percent 20
+ class R3_CORPORATE
+  bandwidth percent 30
+!
+policy-map R3_MARK_IN
+ class R3_CORP_TEST
+  set ip dscp af21
+ class R3_EF_TEST
+  set ip dscp ef
+!
+! The loopback existed in the lab, but its former IP conflicted with the HN test address.
+interface Loopback20
+ no ip address
+ shutdown
+!
+interface Tunnel0
+ ip address 172.16.1.1 255.255.255.252
+ mtu 1476
+ tunnel source GigabitEthernet0/0
+ tunnel destination 10.255.1.2
+!
+interface Tunnel1
+ ip address 172.16.2.1 255.255.255.252
+ mtu 1476
+ tunnel source GigabitEthernet0/0
+ tunnel destination 10.255.3.2
+!
+interface GigabitEthernet0/0
+ description TO_ISP01
+ ip address 10.255.2.2 255.255.255.252
+ ip nat outside
+ service-policy output R3_WAN_OUT
+ duplex auto
+ speed auto
+ crypto map R3_VPN_MAP
+!
+interface GigabitEthernet0/1
+ description TO_HQ_TEST_LAN
+ ip address 10.10.0.1 255.255.255.252
+ ip nat inside
+ service-policy input R3_MARK_IN
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/2
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router bgp 65001
+ bgp router-id 10.254.0.11
+ bgp log-neighbor-changes
+ no synchronization
+ neighbor 10.255.2.1 remote-as 65000
+!
+ip nat inside source list R3_NAT_HQ interface GigabitEthernet0/0 overload
+ip classless
+ip route 10.10.16.0 255.255.240.0 10.10.0.2
+ip route 203.0.113.10 255.255.255.255 10.255.2.1
+ip route 10.10.48.0 255.255.248.0 10.10.0.2
+ip route 203.0.113.11 255.255.255.255 10.255.2.1
+ip route 10.30.16.60 255.255.255.255 172.16.2.2
+ip route 10.20.16.60 255.255.255.255 172.16.1.2
+!
+ip flow-export version 9
+!
+ip access-list extended R3_GRE_HN
+ permit gre host 10.255.2.2 host 10.255.1.2
+ip access-list extended R3_GRE_DN
+ permit gre host 10.255.2.2 host 10.255.3.2
+ip access-list extended R3_NAT_HQ
+ deny ip 10.10.16.0 0.0.15.255 10.0.0.0 0.255.255.255
+ deny ip 10.10.16.0 0.0.15.255 172.16.0.0 0.15.255.255
+ deny ip 10.10.16.0 0.0.15.255 192.168.0.0 0.0.255.255
+ permit ip 10.10.16.0 0.0.15.255 any
+ permit ip 10.10.48.0 0.0.7.255 host 203.0.113.10
+ip access-list extended R3_QOS_CORP_TEST
+ permit icmp host 10.10.16.60 host 203.0.113.10
+ip access-list extended R3_QOS_EF_TEST
+ permit icmp host 10.10.16.60 host 203.0.113.11
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+end

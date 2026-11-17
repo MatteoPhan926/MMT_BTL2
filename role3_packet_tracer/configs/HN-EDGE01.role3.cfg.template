@@ -1,0 +1,55 @@
+!
+! ROLE 3 - HN-EDGE01 - WAN & Security (Packet Tracer lab)
+! IP plan: TechViet Innovations / Role 1
+! Only for the independent Packet Tracer test topology.
+! Replace REPLACE_WITH_LAB_PSK with a unique lab-only PSK before applying.
+! Never store or commit actual production secrets in this file.
+!
+hostname HN-EDGE01
+!
+ip cef
+license boot module c2900 technology-package securityk9
+!
+! IKEv1: Packet Tracer-compatible alternative to IKEv2/VTI
+crypto isakmp policy 10
+ encr aes
+ authentication pre-share
+ group 5
+!
+crypto isakmp key REPLACE_WITH_LAB_PSK address 10.255.2.2
+!
+crypto ipsec transform-set R3_HN_ESP esp-aes esp-sha-hmac
+!
+crypto map R3_VPN_MAP 10 ipsec-isakmp
+ set peer 10.255.2.2
+ set transform-set R3_HN_ESP
+ match address R3_GRE_HQ
+!
+! Test destination representing Hanoi Corporate LAN
+interface Loopback20
+ ip address 10.20.16.60 255.255.255.255
+!
+interface Tunnel0
+ ip address 172.16.1.2 255.255.255.252
+ mtu 1476
+ tunnel source GigabitEthernet0/0
+ tunnel destination 10.255.2.2
+!
+interface GigabitEthernet0/0
+ description TO_ISP01
+ ip address 10.255.1.2 255.255.255.252
+ crypto map R3_VPN_MAP
+!
+router bgp 65002
+ bgp router-id 10.254.0.15
+ bgp log-neighbor-changes
+ no synchronization
+ neighbor 10.255.1.1 remote-as 65000
+!
+ip classless
+ip route 10.10.16.0 255.255.240.0 172.16.1.1
+!
+ip access-list extended R3_GRE_HQ
+ permit gre host 10.255.1.2 host 10.255.2.2
+!
+end
