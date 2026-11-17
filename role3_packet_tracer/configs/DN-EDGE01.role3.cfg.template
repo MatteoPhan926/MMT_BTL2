@@ -1,0 +1,67 @@
+! ============================================================
+! ROLE 3 - DN-EDGE01 (Packet Tracer lab configuration template)
+! TechViet Innovations - WAN & Security
+! Source: user-provided show running-config (Nov 2026)
+! GRE over IKEv1/IPsec is a Packet Tracer lab substitute for
+! the Role 1 IKEv2/IPsec VTI design. Do not overwrite Role 1.
+! Replace REPLACE_WITH_LAB_PSK_HQ_DN with a dedicated LAB key
+! on BOTH HQ-EDGE01 and DN-EDGE01 before applying this template.
+! ============================================================
+!
+hostname DN-EDGE01
+ip cef
+license boot module c2900 technology-package securityk9
+!
+! IKEv1 phase 1 - lab-only compatibility
+crypto isakmp policy 10
+ encr aes
+ authentication pre-share
+ group 5
+!
+crypto isakmp key REPLACE_WITH_LAB_PSK_HQ_DN address 10.255.2.2
+!
+! IPsec transform + GRE selector
+crypto ipsec transform-set R3_DN_ESP esp-aes esp-sha-hmac
+!
+crypto map R3_VPN_MAP 10 ipsec-isakmp
+ set peer 10.255.2.2
+ set transform-set R3_DN_ESP
+ match address R3_GRE_HQ
+!
+! Simulated Da Nang Corporate host (NOT an actual campus LAN)
+interface Loopback30
+ ip address 10.30.16.60 255.255.255.255
+!
+! HQ-DN GRE tunnel
+interface Tunnel1
+ ip address 172.16.2.2 255.255.255.252
+ mtu 1476
+ tunnel source GigabitEthernet0/0
+ tunnel destination 10.255.2.2
+!
+! WAN underlay interface
+interface GigabitEthernet0/0
+ description TO_ISP01
+ ip address 10.255.3.2 255.255.255.252
+ duplex auto
+ speed auto
+ crypto map R3_VPN_MAP
+ no shutdown
+!
+! Underlay eBGP - ISP01
+router bgp 65003
+ bgp router-id 10.254.0.18
+ bgp log-neighbor-changes
+ no synchronization
+ neighbor 10.255.3.1 remote-as 65000
+!
+ip classless
+!
+! Return route from simulated DN loopback to HQ Corporate LAN
+ip route 10.10.16.0 255.255.240.0 172.16.2.1
+!
+! Match GRE packets destined to HQ underlay for encryption
+ip access-list extended R3_GRE_HQ
+ permit gre host 10.255.3.2 host 10.255.2.2
+!
+end
