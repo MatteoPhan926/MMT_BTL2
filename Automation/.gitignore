@@ -1,0 +1,4 @@
+/backups/
+/logs/*
+!/logs/.gitkeep
+/lab-vars.yml

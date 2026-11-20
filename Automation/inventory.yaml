@@ -1,0 +1,43 @@
+all:
+  vars:
+    ansible_connection: ansible.netcommon.network_cli
+    ansible_network_os: cisco.ios.ios
+    ansible_port: 22
+    ansible_command_timeout: 30
+    ansible_user: "{{ lookup('ansible.builtin.env', 'TVI_SSH_USER') }}"
+    ansible_password: "{{ lookup('ansible.builtin.env', 'TVI_SSH_PASSWORD') }}"
+    ansible_network_cli_ssh_type: paramiko
+  children:
+    routers:
+      hosts:
+        HQ-EDGE01: {ansible_host: 192.168.250.11}
+        HN-EDGE01: {ansible_host: 192.168.250.15}
+        DN-EDGE01: {ansible_host: 192.168.250.18}
+        ISP01: {ansible_host: 192.168.250.21}
+    switches:
+      children:
+        hq_switches:
+          vars:
+            campus_vlans:
+              - {vlan_id: 10, name: CORPORATE}
+              - {vlan_id: 99, name: MANAGEMENT}
+          hosts:
+            HQ-DIST-01: {ansible_host: 192.168.250.12}
+            HQ-CORE02: {ansible_host: 192.168.250.13}
+            HQ-ACCESS01: {ansible_host: 192.168.250.14}
+        hn_switches:
+          vars:
+            campus_vlans:
+              - {vlan_id: 20, name: RND_ENGINEERING}
+              - {vlan_id: 99, name: MANAGEMENT}
+          hosts:
+            HN-DIST01: {ansible_host: 192.168.250.16}
+            HN-ACCESS01: {ansible_host: 192.168.250.17}
+        dn_switches:
+          vars:
+            campus_vlans:
+              - {vlan_id: 30, name: LOGISTICS_OPS}
+              - {vlan_id: 99, name: MANAGEMENT}
+          hosts:
+            DN-DIST01: {ansible_host: 192.168.250.19}
+            DN-ACCESS01: {ansible_host: 192.168.250.20}

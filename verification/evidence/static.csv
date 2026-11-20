@@ -1,0 +1,21 @@
+site,check,status,expected,observed,source
+HQ,SVI IPv4,FAIL,10.10.16.0/20,10.16.10.0/24,Configurations/HQ_Startup_Configs/HCMC-DIST-SW01.cfg:68
+HQ,SVI IPv6,FAIL,2001:db8:10:10::/64,(absent),Configurations/HQ_Startup_Configs/HCMC-DIST-SW01.cfg:68
+HQ,DHCP relay,FAIL,10.10.100.10,10.16.99.1,Configurations/HQ_Startup_Configs/HCMC-DIST-SW01.cfg:68
+HQ,SVI IPv4,FAIL,10.10.16.0/20,10.16.10.0/24,Configurations/HQ_Startup_Configs/HCMC-DIST-SW02.cfg:67
+HQ,SVI IPv6,FAIL,2001:db8:10:10::/64,(absent),Configurations/HQ_Startup_Configs/HCMC-DIST-SW02.cfg:67
+HQ,DHCP relay,FAIL,10.10.100.10,10.16.99.1,Configurations/HQ_Startup_Configs/HCMC-DIST-SW02.cfg:67
+HQ,Corporate DHCP scope,FAIL,10.10.16.0/20,"10.16.10.0/24, 10.16.20.0/24, 10.32.20.0/24, 10.48.30.0/24",Configurations/HQ_Startup_Configs
+HN,SVI IPv4,FAIL,10.20.16.0/20,10.32.20.0/24,Configurations/Hanoi_Startup_Configs/HANOI-DIST-SW01.cfg:64
+HN,SVI IPv6,FAIL,2001:db8:20:20::/64,(absent),Configurations/Hanoi_Startup_Configs/HANOI-DIST-SW01.cfg:64
+HN,DHCP relay,FAIL,10.10.100.10,10.16.99.1,Configurations/Hanoi_Startup_Configs/HANOI-DIST-SW01.cfg:64
+HN,SVI IPv4,FAIL,10.20.16.0/20,10.32.20.0/24,Configurations/Hanoi_Startup_Configs/HANOI-DIST-SW02.cfg:64
+HN,SVI IPv6,FAIL,2001:db8:20:20::/64,(absent),Configurations/Hanoi_Startup_Configs/HANOI-DIST-SW02.cfg:64
+HN,DHCP relay,FAIL,10.10.100.10,10.16.99.1,Configurations/Hanoi_Startup_Configs/HANOI-DIST-SW02.cfg:64
+HN,Corporate DHCP scope,FAIL,10.20.16.0/20,"10.16.10.0/24, 10.16.20.0/24, 10.32.20.0/24, 10.48.30.0/24",Configurations/HQ_Startup_Configs
+HN,BGP network statement,PASS,network 10.20.16.0 mask 255.255.240.0,network 10.20.16.0 mask 255.255.240.0,wan-ipsec-bgp/configs/HN-EDGE01.03-overlay-v4.cfg
+DN,SVI IPv4,FAIL,10.30.16.0/20,10.48.30.0/24,Configurations/DaNang_Startup_Configs/DANANG-LOG-SW01.cfg:48
+DN,SVI IPv6,FAIL,2001:db8:30:30::/64,(absent),Configurations/DaNang_Startup_Configs/DANANG-LOG-SW01.cfg:48
+DN,DHCP relay,FAIL,10.10.100.10,10.16.99.1,Configurations/DaNang_Startup_Configs/DANANG-LOG-SW01.cfg:48
+DN,Corporate DHCP scope,FAIL,10.30.16.0/20,"10.16.10.0/24, 10.16.20.0/24, 10.32.20.0/24, 10.48.30.0/24",Configurations/HQ_Startup_Configs
+DN,BGP network statement,PASS,network 10.30.16.0 mask 255.255.240.0,network 10.30.16.0 mask 255.255.240.0,wan-ipsec-bgp/configs/DN-EDGE01.03-overlay-v4.cfg

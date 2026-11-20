@@ -1,0 +1,69 @@
+- name: Capture TVI lab state and optionally provision campus switches
+  hosts: all
+  gather_facts: false
+  vars:
+    provision: false
+  pre_tasks:
+    - name: Create private backup root
+      ansible.builtin.file:
+        path: "{{ playbook_dir }}/backups"
+        state: directory
+        mode: '0700'
+      delegate_to: localhost
+      run_once: true
+    - name: Create unique run directory
+      ansible.builtin.tempfile:
+        state: directory
+        path: "{{ playbook_dir }}/backups"
+        prefix: "{{ now(utc=true, fmt='%Y%m%dT%H%M%SZ') }}_"
+      delegate_to: localhost
+      run_once: true
+      register: run_folder
+    - name: Set capture paths
+      ansible.builtin.set_fact:
+        run_dir: "{{ run_folder.path }}"
+        stamp: "{{ run_folder.path | basename | split('_') | first }}"
+  tasks:
+    - name: Check SSH session and log connection failures per node
+      cisco.ios.ios_command:
+        commands: [show clock]
+      changed_when: false
+
+    - name: Capture initial state
+      ansible.builtin.import_tasks: snapshot.yml
+      vars: {phase: before}
+
+    - name: Provision selected campus switches
+      when: provision | bool and inventory_hostname in groups['switches']
+      block:
+        - name: Require lab service addresses before changing configuration
+          ansible.builtin.assert:
+            that:
+              - lab_ntp is defined and lab_ntp | length > 0
+              - lab_syslog is defined and lab_syslog | length > 0
+            fail_msg: "Define lab_ntp and lab_syslog in lab-vars.yml."
+        - name: Merge site VLANs
+          cisco.ios.ios_vlans:
+            config: "{{ campus_vlans }}"
+            state: merged
+        - name: Configure lab services and a named local AAA list
+          cisco.ios.ios_config:
+            lines:
+              - aaa new-model
+              - aaa authentication login TVI-LAB local
+              - "ntp server {{ lab_ntp }}"
+              - "logging host {{ lab_syslog }}"
+        - name: Set login banner
+          cisco.ios.ios_banner:
+            banner: motd
+            text: Authorized TechViet lab access only.
+            state: present
+      always:
+        - name: Capture state after the provisioning attempt
+          ansible.builtin.import_tasks: snapshot.yml
+          vars: {phase: after}
+
+    - name: Capture final state on read-only nodes
+      ansible.builtin.import_tasks: snapshot.yml
+      vars: {phase: after}
+      when: not (provision | bool and inventory_hostname in groups['switches'])

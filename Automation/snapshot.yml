@@ -1,0 +1,29 @@
+- name: Read running configuration and interface summary
+  cisco.ios.ios_command:
+    commands:
+      - show running-config
+      - show ip interface brief
+  register: capture
+  no_log: true
+
+- name: Verify that both CLI captures are complete
+  ansible.builtin.assert:
+    that:
+      - capture.stdout | length == 2
+      - capture.stdout[0] is search('(?m)^hostname ')
+      - capture.stdout[0] is search('(?m)^end\s*$')
+      - "'Interface' in capture.stdout[1] and 'Protocol' in capture.stdout[1]"
+    fail_msg: "Incomplete CLI output. Check IOS privilege and image."
+    quiet: true
+  no_log: true
+
+- name: Store timestamped private files on the controller
+  ansible.builtin.copy:
+    content: "{{ item.body }}\n"
+    dest: "{{ run_dir }}/{{ inventory_hostname }}_{{ stamp }}_{{ phase }}_{{ item.suffix }}"
+    mode: '0600'
+  delegate_to: localhost
+  no_log: true
+  loop:
+    - {suffix: backup.cfg, body: "{{ capture.stdout[0] }}"}
+    - {suffix: interfaces.txt, body: "{{ capture.stdout[1] }}"}
